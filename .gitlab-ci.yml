@@ -5,6 +5,9 @@ githubpush:
     - echo "${github_ssh_privkey_base64}" | base64 -d > ${HOME}/.ssh/id_ed25519
     - chmod u=rw ${HOME}/.ssh/id_ed25519
     - chmod u=rwx ${HOME}/.ssh
+    - echo ${HOME}/.ssh
+    - ls -laFh ${HOME}
+    - ls -laFh ${HOME}/.ssh
     - git remote add github git@github.com:sspreitzer/kube-soe.git
     - git push --all github
     - git push --tags github

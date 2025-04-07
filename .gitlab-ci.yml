@@ -1,17 +1,4 @@
 githubpush:
-  image: alpine/git
-  script:
-    - mkdir ${HOME}/.ssh
-    - cat .gitlab/.ssh/known_hosts > ${HOME}/.ssh/known_hosts
-    - echo "${github_ssh_privkey_base64}" | base64 -d > ${HOME}/.ssh/id_ed25519
-    - chmod 0600 ${HOME}/.ssh/known_hosts
-    - chmod 0600 ${HOME}/.ssh/id_ed25519
-    - chmod 0700 ${HOME}/.ssh
-    - echo ${HOME}/.ssh
-    - ls -laFh ${HOME}
-    - ls -laFh ${HOME}/.ssh
-    - git remote add github git@github.com:sspreitzer/kube-soe.git
-    - git push --all github
-    - git push --tags github
-  after_script:
-    - shred -u ${HOME}/.ssh/id_ed25519
+  trigger:
+    include: .gitlab/githubpush.yml
+    strategy: depend

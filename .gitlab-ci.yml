@@ -1,0 +1,9 @@
+githubpush:
+  image: alpine/git
+  script:
+    - mkdir c
+    - echo "${github_ssh_privkey_base64}" | base64 -d > ${HOME}/.ssh/id_ed25519
+    - chmod u=rw ${HOME}/.ssh/id_ed25519
+    - chmod u=rwx ${HOME}/.ssh
+    - git remote add github git@github.com:sspreitzer/kube-soe.git
+    - git push --all --tags github

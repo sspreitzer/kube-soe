@@ -7,11 +7,12 @@ githubpush:
     - chmod 0600 ${HOME}/.ssh/known_hosts
     - chmod 0600 ${HOME}/.ssh/id_ed25519
     - chmod 0700 ${HOME}/.ssh
-    - git fetch --all --tags -v
-    - git remote add github git@github.com:sspreitzer/kube-soe.git
-    - git remote -v
-    - git show-ref
-    - git push --all github
-    - git push --tags github
+    - D=$(mktemp -d)
+    - git clone --mirror ${CI_REPOSITORY_URL} ${D}
+    - cd ${D}
+    - git remote add github ${GITHUB_REPOSITORY_URL}
+    - git push --mirror github
+    - cd -
+    - rm -rf ${D}
   after_script:
     - shred -u ${HOME}/.ssh/id_ed25519

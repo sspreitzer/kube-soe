@@ -7,10 +7,9 @@ githubpush:
     - chmod 0600 ${HOME}/.ssh/known_hosts
     - chmod 0600 ${HOME}/.ssh/id_ed25519
     - chmod 0700 ${HOME}/.ssh
-    - echo ${HOME}/.ssh
-    - ls -laFh ${HOME}
-    - ls -laFh ${HOME}/.ssh
     - git remote add github git@github.com:sspreitzer/kube-soe.git
+    - git remote -v
+    - git show-ref
     - git push --all github
     - git push --tags github
   after_script:

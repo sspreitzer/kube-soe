@@ -6,4 +6,5 @@ githubpush:
     - chmod u=rw ${HOME}/.ssh/id_ed25519
     - chmod u=rwx ${HOME}/.ssh
     - git remote add github git@github.com:sspreitzer/kube-soe.git
-    - git push --all --tags github
+    - git push --all github
+    - git push --tags github

@@ -1,7 +1,7 @@
 githubpush:
   image: alpine/git
   script:
-    - mkdir c
+    - mkdir ${HOME}/.ssh
     - echo "${github_ssh_privkey_base64}" | base64 -d > ${HOME}/.ssh/id_ed25519
     - chmod u=rw ${HOME}/.ssh/id_ed25519
     - chmod u=rwx ${HOME}/.ssh

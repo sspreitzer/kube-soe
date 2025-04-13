@@ -1,0 +1,102 @@
+{{- if .Capabilities.APIVersions.Has "argoproj.io/v1alpha1" }}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: soe
+  namespace: soe-argo-cd
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=zero
+  generators:
+    {{- range (.Values.profiles | default (list "base")) }}
+    - git:
+        repoURL: '{{ $.Values.soeRepoURL }}'
+        revision: '{{ $.Values.soeRepoRevision }}'
+        files:
+          - path: "profiles/{{ . }}/**/app.yml"
+    {{- end }}
+    {{- range (.Values.apps | default (list)) }}
+    - git:
+        repoURL: '{{ $.Values.soeRepoURL }}'
+        revision: '{{ $.Values.soeRepoRevision }}'
+        files:
+          - path: "apps/{{ . }}/app.yml"
+    {{- end }}
+  template:
+    metadata:
+      name: '{{`{{ .name }}`}}'
+      namespace: soe-argo-cd
+      labels:
+        soe.app/type: '{{`{{ .type | default "helm" }}`}}'
+      annotations:
+        soe.app/yml: '{{`{{ toYaml . }}`}}'
+    spec:
+      destination:
+        server: '{{`{{ .server | default "https://kubernetes.default.svc" }}`}}'
+        namespace: '{{`{{ .namespace }}`}}'
+      project: default
+  templatePatch: |
+    {{`{{- if eq (.type | default "helm") "helm" }}`}}
+    spec:
+      sources:
+        - repoURL: '{{`{{ .helmRepoURL }}`}}'
+          targetRevision: '{{`{{ .helmTargetRevision | default '*' }}`}}'
+          {{`{{- if .helmChart  }}`}}
+          chart: '{{`{{ .helmChart }}`}}'
+          {{`{{- end }}`}}
+          {{`{{- if .helmRepoPath }}`}}
+          path: '{{`{{ .helmRepoPath }}`}}'
+          {{`{{- end }}`}}
+          helm:
+            ignoreMissingValueFiles: true
+            releaseName: '{{`{{ .helmReleaseName | default .name }}`}}'
+            skipCrds: {{`{{ .helmSkipCrds | default false }}`}}
+            valueFiles:
+              - $values/apps/{{`{{ .category }}`}}/{{`{{ .name }}`}}/values.yml
+              {{- range (.Values.profiles | default (list "base")) }}
+              - $values/profiles/{{ . }}/{{`{{ .category }}`}}/{{`{{ .name }}`}}/values.yml
+              {{- end }}
+              - $values/clusters/{{ .Values.clusterName }}/{{`{{ .category }}`}}/{{`{{ .name }}`}}/values.yml
+        - repoURL: '{{ .Values.soeRepoURL }}'
+          targetRevision: '{{ .Values.soeRepoRevision }}'
+          ref: values
+        - repoURL: '{{ .Values.soeRepoURL }}'
+          targetRevision: '{{ .Values.soeRepoRevision }}'
+          path: apps
+          directory:
+            recurse: true
+            include: '{{`{{ .category }}`}}/{{`{{ .name }}`}}/extras/{*.yml,*.yaml,*.json}'
+        {{- range (.Values.profiles | default (list "base")) }}
+        - repoURL: '{{ $.Values.soeRepoURL }}'
+          targetRevision: '{{ $.Values.soeRepoRevision }}'
+          path: profiles
+          directory:
+            recurse: true
+            include: '{{ . }}/{{`{{ .category }}`}}/{{`{{ .name }}`}}/extras/{*.yml,*.yaml,*.json}'
+        {{- end }}
+        - repoURL: '{{ .Values.soeRepoURL }}'
+          targetRevision: '{{ .Values.soeRepoRevision }}'
+          path: clusters
+          directory:
+            recurse: true
+            include: '{{ .Values.clusterName }}/{{`{{ .category }}`}}/{{`{{ .name }}`}}/extras/{*.yml,*.yaml,*.json}'
+      syncPolicy:
+        {{`{{ if ne .helmAutoSync false }}`}}
+        automated:
+          prune: {{`{{ .helmPrune | default true }}`}}
+          selfHeal: {{`{{ .helmSelfHeal | default true }}`}}
+        {{`{{ end }}`}}
+        syncOptions:
+          - CreateNamespace={{`{{ .helmCreateNamespace | default true }}`}}
+          - ServerSideApply={{`{{ .helmServerSideApply | default false }}`}}
+        {{`{{ if .helmManagedNamespaceMetadata }}`}}
+        managedNamespaceMetadata: {{`{{ nindent 6 (toJson .helmManagedNamespaceMetadata) }}`}}
+        {{`{{ end }}`}}
+      {{`{{ if .helmIgnoreDifferences }}`}}
+      ignoreDifferences: {{`{{ nindent 4 (toJson .helmIgnoreDifferences) }}`}}
+      {{`{{ end }}`}}
+    {{`{{- end }}`}}
+{{- end }}

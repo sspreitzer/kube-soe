@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "assignees": ["sspreitzer"],
+  "includePaths": [
+    "apps/**"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "ignoreTests": true
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["app\\.yml$"],
+      "matchStrings": [
+        "helmRepoURL: (?<registryUrl>.+?)\\n.*helmChart: (?<packageName>.+?)\\nhelmTargetRevision: (?<currentValue>.+?)\\n"
+      ],
+      "datasourceTemplate": "helm"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["app\\.yml$"],
+      "matchStrings": [
+        "helmRepoURL: (?<registryUrl>.+?)\\n.*helmChart: (?<packageName>.+?)\\nhelmTargetRevision: (?<currentValue>.+?)\\n"
+
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ]
+}

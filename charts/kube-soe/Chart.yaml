@@ -1,0 +1,21 @@
+apiVersion: v2
+name: kube-soe
+version: 1.32.0-ksoe.1
+appVersion: '1.32.0'
+kubeVersion: '>=1.32.0'
+description: The Kubernetes Standard Operating Environment
+keywords:
+  - kubernetes
+  - argocd
+  - helm
+  - kustomize
+home: https://github.com/sspreitzer/kube-soe
+sources:
+  - https://github.com/sspreitzer/kube-soe.git
+maintainers:
+  - name: Sascha Spreitzer
+    email: sascha@spreitzer.ch
+    url: https://github.com/sspreitzer
+# icon: https://git.spreitzer.ch/uploads/-/system/project/avatar/124/terminal.png
+
+# https://helm.sh/docs/topics/charts/#the-chartyaml-file

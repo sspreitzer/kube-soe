@@ -1,0 +1,7 @@
+type: helm
+category: security
+name: kyverno-policies
+namespace: kyverno
+helmRepoURL: https://kyverno.github.io/kyverno
+helmChart: kyverno-policies
+helmTargetRevision: 3.3.4

@@ -1,0 +1,8 @@
+type: helm
+category: security
+name: kyverno
+namespace: kyverno
+helmRepoURL: https://kyverno.github.io/kyverno
+helmChart: kyverno
+helmTargetRevision: 3.3.7
+helmServerSideApply: true

@@ -1,0 +1,7 @@
+type: helm
+category: security
+name: cert-manager
+namespace: cert-manager
+helmRepoURL: https://charts.jetstack.io
+helmChart: cert-manager
+helmTargetRevision: v1.17.1

@@ -1,0 +1,6 @@
+clusterName: none
+profiles:
+  - base
+apps: []
+soeRepoURL: https://github.com/sspreitzer/kube-soe.git
+soeRepoRevision: main

@@ -1,0 +1,7 @@
+type: helm
+category: security
+name: trivy-operator
+namespace: trivy-system
+helmRepoURL: https://aquasecurity.github.io/helm-charts
+helmChart: trivy-operator
+helmTargetRevision: 0.27.0

@@ -1,0 +1,7 @@
+type: helm
+category: gitops
+name: soe-argo-cd
+namespace: soe-argo-cd
+helmRepoURL: https://argoproj.github.io/argo-helm
+helmChart: argo-cd
+helmTargetRevision: 7.8.24

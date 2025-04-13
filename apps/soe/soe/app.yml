@@ -1,0 +1,7 @@
+type: helm
+category: soe
+name: soe
+namespace: soe-argo-cd
+helmRepoURL: https://github.com/sspreitzer/kube-soe.git
+helmRepoPath: charts/kube-soe
+helmTargetRevision: main

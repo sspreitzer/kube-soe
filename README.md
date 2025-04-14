@@ -2,9 +2,11 @@
 
 ## DISCLAIMER
 
-This project and code is currently in a development state. The information in the documentation and the codebase might not up-to-date. Insofar do not expect reliability or stability. But feel invited to contribute and enhance.
+This project and code is currently in a development state. The information in the documentation and the codebase might not be up-to-date. Insofar do not expect reliability or stability. But feel invited to contribute and enhance.
 
 ## What is kube-soe?
+
+![kube-soe logo](contrib/images/terminal.png "kube-soe")
 
 `kube-soe`is an opensource project that enables Kubernetes platform engineers or administrators to maintain a fleet of Kubernetes clusters via GitOps principles.
 
@@ -13,6 +15,33 @@ This project and code is currently in a development state. The information in th
 `kube-soe` was born out of the idea to create a Kubernetes distribution and vendor independent way to maintain Kubernetes clusters that is not using the operator pattern for itself. The project shall suffice multiple vendor scenarios at once while having a relatively low learning curve.
 
 ## Principles
+
+### Project Standards
+
+This project uses a set of tools and patterns, which are it's foundation. These are:
+
+* [ArgoCD](https://argo-cd.readthedocs.io/en/stable)
+  * [App of Apps Pattern](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern)
+  * [ApplicationSets](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset)
+* [Helm](https://helm.sh)
+  * [ArgoCD Application with Git based Helm Chart](https://argo-cd.readthedocs.io/en/stable/user-guide/helm)
+
+### Project Versioning
+
+The project follows the external `Semantic Versioning` standard.
+
+* The major version part is increased when:
+  * **breaking** changes are introduced
+  * subsequent applications major versions are increased
+  * 3 or more applications or important updates are grouped togther
+
+* The minor version part is increased *automaticaly* when:
+  * **non-breaking** enhancements are introduced
+  * subsequent applications minor versions are increased
+
+* The pathch version part is increased *automaticaly* when:
+  * **non-breaking** patches are introduced
+  * subsequent applications patch versions are increased
 
 ### External Standards
 
